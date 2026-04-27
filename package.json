@@ -1,0 +1,17 @@
+{
+  "name": "zen-mode",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter desktop-ui tauri dev",
+    "build": "pnpm --filter desktop-ui tauri build",
+    "typecheck": "pnpm --filter desktop-ui typecheck",
+    "lint": "pnpm --filter desktop-ui lint",
+    "test:rust": "cargo test --workspace",
+    "check:rust": "cargo check --workspace",
+    "fmt:rust": "cargo fmt --all",
+    "clippy": "cargo clippy --all-targets --all-features -- -D warnings"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

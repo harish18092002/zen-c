@@ -1,0 +1,14 @@
+[package]
+name = "zen-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+zen-domain = { path = "../zen-domain" }
+async-trait = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+time = { workspace = true }
+serde = { workspace = true }
+tokio = { workspace = true }

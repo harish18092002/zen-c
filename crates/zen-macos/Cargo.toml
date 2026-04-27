@@ -1,0 +1,13 @@
+[package]
+name = "zen-macos"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+zen-domain = { path = "../zen-domain" }
+zen-os = { path = "../zen-os" }
+async-trait = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+serde = { workspace = true }

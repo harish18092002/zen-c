@@ -1,0 +1,46 @@
+# Rust build artifacts
+/target
+**/*.rs.bk
+
+# Node
+node_modules/
+.pnpm-debug.log
+.pnpm-store/
+
+# Build outputs
+dist/
+apps/desktop-ui/dist/
+apps/desktop-ui/src-tauri/target/
+apps/desktop-ui/src-tauri/WixTools/
+apps/desktop-ui/src-tauri/gen/
+
+# SQLite
+*.db
+*.db-shm
+*.db-wal
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+.DS_Store
+*.xcuserstate
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Signing artifacts
+*.p12
+*.cer
+*.mobileprovision
+infra/signing/*.key
+infra/signing/*.pem
