@@ -59,7 +59,10 @@ async fn main() -> anyhow::Result<()> {
         Commands::Permissions => {
             println!("Permission probe (stub — implement per platform)");
         }
-        Commands::Simulate { duration_mins, mode } => {
+        Commands::Simulate {
+            duration_mins,
+            mode,
+        } => {
             println!("Simulating {duration_mins}m {mode} session (stub)...");
         }
     }

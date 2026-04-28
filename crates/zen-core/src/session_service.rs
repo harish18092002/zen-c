@@ -78,17 +78,16 @@ impl SessionService {
         session_id: &SessionId,
         reason: AbortReason,
     ) -> Result<(), DomainError> {
-        let session = self
-            .sessions
-            .find_by_id(session_id)
-            .await?
-            .ok_or_else(|| DomainError::NotFound {
-                entity: "Session".to_string(),
-                id: format!("{:?}", session_id),
-            })?;
+        let session =
+            self.sessions
+                .find_by_id(session_id)
+                .await?
+                .ok_or_else(|| DomainError::NotFound {
+                    entity: "Session".to_string(),
+                    id: format!("{:?}", session_id),
+                })?;
 
-        let mut fsm =
-            SessionFsm::new(session_id.clone(), session.planned_duration_secs);
+        let mut fsm = SessionFsm::new(session_id.clone(), session.planned_duration_secs);
         let aborted_event = fsm.abort(reason)?;
         self.sessions.append_event(&aborted_event).await?;
 

@@ -19,7 +19,10 @@ impl Default for MacOsDnsProxy {
 #[async_trait]
 impl NetworkBlockingAdapter for MacOsDnsProxy {
     async fn apply(&self, plan: &EnforcementPlan) -> Result<(), OsError> {
-        tracing::info!("macOS DNS proxy: applying {} domain rules", plan.domain_rules.len());
+        tracing::info!(
+            "macOS DNS proxy: applying {} domain rules",
+            plan.domain_rules.len()
+        );
         // TODO: Reconfigure local DNS proxy resolver rules
         Ok(())
     }

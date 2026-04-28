@@ -24,14 +24,14 @@ impl PolicyEngine {
         revision: i64,
         strictness: Strictness,
     ) -> Result<EnforcementPlan, DomainError> {
-        let profile = self
-            .profiles
-            .find_by_id(profile_id)
-            .await?
-            .ok_or_else(|| DomainError::NotFound {
-                entity: "Profile".to_string(),
-                id: format!("{:?}", profile_id),
-            })?;
+        let profile =
+            self.profiles
+                .find_by_id(profile_id)
+                .await?
+                .ok_or_else(|| DomainError::NotFound {
+                    entity: "Profile".to_string(),
+                    id: format!("{:?}", profile_id),
+                })?;
 
         PolicyCompiler::compile(session_id, &profile, revision, strictness)
     }

@@ -9,6 +9,7 @@ use zen_domain::{
 use zen_core::ports::SessionRepository;
 
 pub struct SqliteSessionRepository {
+    #[allow(dead_code)]
     pool: SqlitePool,
 }
 
@@ -36,11 +37,10 @@ impl SessionRepository for SqliteSessionRepository {
     }
 
     async fn append_event(&self, event: &DomainEvent) -> Result<(), DomainError> {
-        let payload = serde_json::to_string(event).map_err(|e| {
-            DomainError::PlanCompilationFailed {
+        let payload =
+            serde_json::to_string(event).map_err(|e| DomainError::PlanCompilationFailed {
                 reason: e.to_string(),
-            }
-        })?;
+            })?;
         tracing::debug!("Event appended: {}", payload);
         // TODO: Insert into session_events table
         Ok(())

@@ -8,6 +8,7 @@ use zen_domain::{
 use zen_core::ports::ProfileRepository;
 
 pub struct SqliteProfileRepository {
+    #[allow(dead_code)]
     pool: SqlitePool,
 }
 

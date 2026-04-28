@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct StartSessionPayload {
     pub profile_id: String,
     pub duration_secs: u64,
