@@ -24,6 +24,16 @@ tokio = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 uuid = { workspace = true }
+time = { workspace = true }
+thiserror = { workspace = true }
+sqlx = { workspace = true }
 zen-domain = { path = "../../../crates/zen-domain" }
 zen-core = { path = "../../../crates/zen-core" }
 zen-db = { path = "../../../crates/zen-db" }
+zen-os = { path = "../../../crates/zen-os" }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+zen-macos = { path = "../../../crates/zen-macos" }
+
+[target.'cfg(target_os = "windows")'.dependencies]
+zen-windows = { path = "../../../crates/zen-windows" }

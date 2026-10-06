@@ -10,9 +10,13 @@ path = "src/main.rs"
 
 [dependencies]
 zen-domain = { path = "../zen-domain" }
+zen-core = { path = "../zen-core" }
 zen-db = { path = "../zen-db" }
+zen-os = { path = "../zen-os" }
 clap = { workspace = true }
 tokio = { workspace = true }
 anyhow = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
+sqlx = { workspace = true }
+time = { workspace = true }

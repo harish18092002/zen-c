@@ -1,7 +1,16 @@
-// TypeScript types that mirror the Rust domain contracts.
-// These are kept in sync manually until specta-based code generation is wired up.
+// Wire types shared between the Rust backend (`apps/desktop-ui/src-tauri`) and
+// the React frontend. Keep these in lockstep with `dto.rs` — every field name
+// and string variant must match exactly.
 
 export type SessionMode = 'Focus' | 'ShortBreak' | 'LongBreak' | 'Strict'
+
+export type Strictness = 'Normal' | 'Strict'
+
+export type AbortReason =
+  | 'UserRequested'
+  | 'PermissionRevoked'
+  | 'SystemShutdown'
+  | 'TimerCorrupted'
 
 export type SessionStateKind =
   | 'Idle'
@@ -13,27 +22,38 @@ export type SessionStateKind =
   | 'Aborted'
   | 'Recovering'
 
-export interface ActiveSessionState {
-  startedAt: string
-  endsAt: string
-}
-
-export interface PausedSessionState {
-  remainingSecs: number
-}
-
-export interface AbortedSessionState {
-  reason: 'UserRequested' | 'PermissionRevoked' | 'SystemShutdown' | 'TimerCorrupted'
-}
+export type SessionState =
+  | { kind: 'Idle' }
+  | { kind: 'Preparing' }
+  | { kind: 'Active'; startedAt: string; endsAt: string }
+  | { kind: 'Paused'; remainingSecs: number }
+  | { kind: 'Completing' }
+  | { kind: 'Completed' }
+  | { kind: 'Aborted'; reason: AbortReason }
+  | { kind: 'Recovering' }
 
 export interface Session {
   id: string
   profileId: string
   mode: SessionMode
-  state: SessionStateKind
+  state: SessionState
   plannedDurationSecs: number
-  startedAt?: string
-  completedAt?: string
+  createdAt: string
+}
+
+export type BlockRuleKind = 'App' | 'Domain' | 'Category' | 'Network'
+
+export interface BlockRule {
+  id: string
+  kind: BlockRuleKind
+  target: string
+  enabled: boolean
+}
+
+export interface BlockRuleInput {
+  kind: BlockRuleKind
+  target: string
+  enabled: boolean
 }
 
 export interface Profile {
@@ -45,51 +65,51 @@ export interface Profile {
   updatedAt: string
 }
 
-export interface BlockRule {
-  id: string
-  profileId: string
-  kind: 'App' | 'Domain' | 'Category' | 'Network'
-  target: string
-  enabled: boolean
+export interface ProfileUpsertRequest {
+  id?: string
+  name: string
+  blockRules: BlockRuleInput[]
 }
 
-export interface EnforcementPlan {
-  revision: number
+export interface StartSessionRequest {
+  profileId: string
+  durationSecs: number
+  mode: SessionMode
+  strictness?: Strictness
+}
+
+export interface StartSessionResult {
   sessionId: string
-  appRules: AppRule[]
-  domainRules: DomainRule[]
-  strictness: 'Normal' | 'Strict'
+  startedAt: string
+  endsAt: string
+  planRevision: number
   planHash: string
 }
 
-export interface AppRule {
-  bundleId?: string
-  executablePath?: string
-  action: BlockAction
+export type TimerStateString = 'Running' | 'Paused' | 'Completed' | 'Idle'
+
+export interface TimerTick {
+  sessionId: string
+  remainingSecs: number
+  elapsedSecs: number
+  plannedSecs: number
+  state: TimerStateString
 }
 
-export interface DomainRule {
-  pattern: string
-  normalized: string
-  action: BlockAction
-}
+export type PermissionStatusString =
+  | 'Healthy'
+  | 'Degraded'
+  | 'Unavailable'
+  | 'PermissionDenied'
 
-export type BlockAction = 'Block' | 'Allow' | { Redirect: { url: string } }
-
-export interface PermissionState {
+export interface Permission {
   name: string
-  status: 'Healthy' | 'Degraded' | 'Unavailable' | 'PermissionDenied'
+  status: PermissionStatusString
   detail?: string
 }
 
-export interface TamperEvent {
-  kind:
-    | 'HelperStopped'
-    | 'ClockRollback'
-    | 'UpdateMismatch'
-    | 'RulesDiverged'
-    | 'BinaryReplaced'
-    | { PermissionRevoked: { permission: string } }
+export interface TamperRecord {
+  eventType: string
   detail?: string
   detectedAt: string
 }

@@ -1,4 +1,6 @@
 #[cfg(target_os = "macos")]
+pub mod adapter;
+#[cfg(target_os = "macos")]
 pub mod app_blocker;
 #[cfg(target_os = "macos")]
 pub mod dns_proxy;

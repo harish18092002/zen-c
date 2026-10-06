@@ -40,12 +40,44 @@ pub enum SessionMode {
     Strict,
 }
 
+impl SessionMode {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            SessionMode::Focus => "Focus",
+            SessionMode::ShortBreak => "ShortBreak",
+            SessionMode::LongBreak => "LongBreak",
+            SessionMode::Strict => "Strict",
+        }
+    }
+
+    pub fn parse(s: &str) -> Option<Self> {
+        match s {
+            "Focus" => Some(SessionMode::Focus),
+            "ShortBreak" => Some(SessionMode::ShortBreak),
+            "LongBreak" => Some(SessionMode::LongBreak),
+            "Strict" => Some(SessionMode::Strict),
+            _ => None,
+        }
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum AbortReason {
     UserRequested,
     PermissionRevoked,
     SystemShutdown,
     TimerCorrupted,
+}
+
+impl AbortReason {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            AbortReason::UserRequested => "UserRequested",
+            AbortReason::PermissionRevoked => "PermissionRevoked",
+            AbortReason::SystemShutdown => "SystemShutdown",
+            AbortReason::TimerCorrupted => "TimerCorrupted",
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -65,6 +97,36 @@ pub enum SessionState {
         reason: AbortReason,
     },
     Recovering,
+}
+
+impl SessionState {
+    pub fn discriminant(&self) -> &'static str {
+        match self {
+            SessionState::Idle => "Idle",
+            SessionState::Preparing => "Preparing",
+            SessionState::Active { .. } => "Active",
+            SessionState::Paused { .. } => "Paused",
+            SessionState::Completing => "Completing",
+            SessionState::Completed => "Completed",
+            SessionState::Aborted { .. } => "Aborted",
+            SessionState::Recovering => "Recovering",
+        }
+    }
+
+    pub fn is_terminal(&self) -> bool {
+        matches!(self, SessionState::Completed | SessionState::Aborted { .. })
+    }
+
+    pub fn is_running(&self) -> bool {
+        matches!(
+            self,
+            SessionState::Preparing
+                | SessionState::Active { .. }
+                | SessionState::Paused { .. }
+                | SessionState::Completing
+                | SessionState::Recovering
+        )
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -98,6 +160,27 @@ pub enum BlockRuleKind {
     Network,
 }
 
+impl BlockRuleKind {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            BlockRuleKind::App => "App",
+            BlockRuleKind::Domain => "Domain",
+            BlockRuleKind::Category => "Category",
+            BlockRuleKind::Network => "Network",
+        }
+    }
+
+    pub fn parse(s: &str) -> Option<Self> {
+        match s {
+            "App" => Some(BlockRuleKind::App),
+            "Domain" => Some(BlockRuleKind::Domain),
+            "Category" => Some(BlockRuleKind::Category),
+            "Network" => Some(BlockRuleKind::Network),
+            _ => None,
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BlockRule {
     pub id: Uuid,
@@ -123,6 +206,17 @@ pub enum PermissionStatus {
     Degraded,
     Unavailable,
     PermissionDenied,
+}
+
+impl PermissionStatus {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            PermissionStatus::Healthy => "Healthy",
+            PermissionStatus::Degraded => "Degraded",
+            PermissionStatus::Unavailable => "Unavailable",
+            PermissionStatus::PermissionDenied => "PermissionDenied",
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

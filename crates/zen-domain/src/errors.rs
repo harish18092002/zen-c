@@ -13,4 +13,10 @@ pub enum DomainError {
 
     #[error("Enforcement plan compilation failed: {reason}")]
     PlanCompilationFailed { reason: String },
+
+    #[error("Invalid input: {reason}")]
+    InvalidInput { reason: String },
+
+    #[error("Persistence error: {reason}")]
+    Persistence { reason: String },
 }

@@ -27,8 +27,7 @@ jobs:
       - name: fmt
         run: cargo fmt --all -- --check
       - name: clippy
-        # -W warnings during scaffold phase; promote to -D once stubs are filled in
-        run: cargo clippy --all-targets --all-features -- -W warnings
+        run: cargo clippy --workspace --all-targets -- -D warnings
       - name: test
         run: cargo test --workspace
 
@@ -43,10 +42,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          # cache requires pnpm-lock.yaml — enable after first `pnpm install` is committed
-          # cache: pnpm
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
       - name: Typecheck
         working-directory: apps/desktop-ui
         run: pnpm typecheck
+      - name: Lint
+        working-directory: apps/desktop-ui
+        run: pnpm lint
+        continue-on-error: true

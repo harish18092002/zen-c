@@ -79,4 +79,47 @@ impl DomainEvent {
             DomainEvent::TamperDetected { at, .. } => *at,
         }
     }
+
+    pub fn event_type(&self) -> &'static str {
+        match self {
+            DomainEvent::SessionRequested { .. } => "SessionRequested",
+            DomainEvent::SessionPreparationStarted { .. } => "SessionPreparationStarted",
+            DomainEvent::EnforcementApplied { .. } => "EnforcementApplied",
+            DomainEvent::SessionStarted { .. } => "SessionStarted",
+            DomainEvent::SessionPaused { .. } => "SessionPaused",
+            DomainEvent::SessionResumed { .. } => "SessionResumed",
+            DomainEvent::SessionCompleted { .. } => "SessionCompleted",
+            DomainEvent::SessionAborted { .. } => "SessionAborted",
+            DomainEvent::CrashRecovered { .. } => "CrashRecovered",
+            DomainEvent::TamperDetected { .. } => "TamperDetected",
+        }
+    }
+
+    pub fn session_id(&self) -> Option<&SessionId> {
+        match self {
+            DomainEvent::SessionRequested { session_id, .. }
+            | DomainEvent::SessionPreparationStarted { session_id, .. }
+            | DomainEvent::EnforcementApplied { session_id, .. }
+            | DomainEvent::SessionStarted { session_id, .. }
+            | DomainEvent::SessionPaused { session_id, .. }
+            | DomainEvent::SessionResumed { session_id, .. }
+            | DomainEvent::SessionCompleted { session_id, .. }
+            | DomainEvent::SessionAborted { session_id, .. }
+            | DomainEvent::CrashRecovered { session_id, .. } => Some(session_id),
+            DomainEvent::TamperDetected { .. } => None,
+        }
+    }
+}
+
+impl TamperKind {
+    pub fn discriminant(&self) -> &'static str {
+        match self {
+            TamperKind::HelperStopped => "HelperStopped",
+            TamperKind::PermissionRevoked { .. } => "PermissionRevoked",
+            TamperKind::ClockRollback => "ClockRollback",
+            TamperKind::UpdateMismatch => "UpdateMismatch",
+            TamperKind::RulesDiverged => "RulesDiverged",
+            TamperKind::BinaryReplaced => "BinaryReplaced",
+        }
+    }
 }

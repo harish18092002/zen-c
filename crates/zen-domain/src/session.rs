@@ -170,7 +170,7 @@ impl SessionFsm {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::entities::{BlockAction, Strictness};
+    use crate::entities::Strictness;
 
     fn make_plan(session_id: SessionId) -> EnforcementPlan {
         EnforcementPlan {

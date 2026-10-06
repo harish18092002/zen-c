@@ -4,6 +4,8 @@ A **local-first, tamper-aware, cross-platform focus application** with a Rust-na
 
 Built around one principle: **when you commit to a focus session, the app keeps that commitment even when your distracted self doesn't want it to.**
 
+> 📘 **New to this codebase?** Start with [`docs/SYSTEM_ARCHITECTURE_AND_LEARNING.md`](docs/SYSTEM_ARCHITECTURE_AND_LEARNING.md) — a detailed walkthrough that maps every concept here to NestJS/TypeScript equivalents.
+
 ---
 
 ## What is Zen Mode?
